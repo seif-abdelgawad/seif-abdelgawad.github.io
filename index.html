@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Seif Abdelgawad — Penetration Tester &amp; Security Researcher</title>
+<meta name="description" content="Seif Abdelgawad — Penetration Tester & Bug Hunter from Egypt. Certifications in Palo Alto, Fortinet, Sophos & Cisco. Hands-on labs in IPS, DoS protection & firewall policy migration."/>
+<meta name="theme-color" content="#0a0a0a"/>
+
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Seif Abdelgawad — Penetration Tester & Security Researcher"/>
+<meta property="og:description" content="Penetration Tester & Bug Hunter. Palo Alto · Fortinet · Sophos · Cisco certified. Explore labs, certifications & projects."/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Seif Abdelgawad — Penetration Tester & Security Researcher"/>
+<meta name="twitter:description" content="Penetration Tester & Bug Hunter. Palo Alto · Fortinet · Sophos · Cisco certified."/>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cellipse cx='50' cy='42' rx='32' ry='30' fill='%23cc0000'/%3E%3Crect x='28' y='62' width='44' height='20' rx='4' fill='%23cc0000'/%3E%3Crect x='36' y='68' width='8' height='14' rx='2' fill='%230a0a0a'/%3E%3Crect x='48' y='68' width='8' height='14' rx='2' fill='%230a0a0a'/%3E%3Crect x='60' y='68' width='8' height='14' rx='2' fill='%230a0a0a'/%3E%3Cellipse cx='37' cy='40' rx='10' ry='11' fill='%230a0a0a'/%3E%3Cellipse cx='63' cy='40' rx='10' ry='11' fill='%230a0a0a'/%3E%3Cpath d='M46 52 L50 46 L54 52 L52 54 L48 54 Z' fill='%230a0a0a'/%3E%3C/svg%3E"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  :root {
+    --bg: #0a0a0a;
+    --bg-alt: #070707;
+    --bg-card: #0f0f0f;
+    --bg-nav: rgba(8,8,8,0.75);
+    --green: #00ff41;
+    --green-dim: #00cc33;
+    --green-soft: rgba(0,255,65,0.08);
+    --green-border: #1a2e1a;
+    --text: #e6ffe6;
+    --text-muted: #00cc33;
+    --text-dim: #5c8a5c;
+    --border: #1a2e1a;
+    --card-hover: #0d1a0d;
+    --btn-green: #00aa22;
+    --btn-green-hover: #00c928;
+    --red: #ff3b3b;
+    --amber: #f59e0b;
+    --radius: 12px;
+    --shadow-glow: 0 0 0 1px var(--green-border), 0 8px 30px -12px rgba(0,255,65,0.15);
+    --ease: cubic-bezier(.16,1,.3,1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  ::selection { background: var(--green); color: #001a00; }
+
+  /* subtle scanline + grid texture over whole page */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background-image:
+      linear-gradient(rgba(0,255,65,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,65,0.035) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 30%, transparent 75%);
+  }
+
+  /* scroll progress bar */
+  .scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--green-dim), var(--green));
+    box-shadow: 0 0 8px var(--green);
+    z-index: 300;
+    transition: width 0.08s linear;
+  }
+
+  a { color: inherit; }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+  }
+  .reveal-stagger.is-visible > * { opacity: 1; transform: translateY(0); }
+
+  /* NAV */
+  nav {
+    background: var(--bg-nav);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 0.98rem;
+    color: var(--text);
+    letter-spacing: 0.01em;
+    text-decoration: none;
+  }
+  .nav-brand svg { width: 24px; height: 24px; flex-shrink: 0; }
+  .nav-brand .prompt { color: var(--green); }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    position: relative;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    transition: color 0.2s;
+    padding: 0.3rem 0;
+  }
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -2px;
+    width: 0%;
+    height: 1px;
+    background: var(--green);
+    transition: width 0.25s var(--ease);
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-links a.active { color: var(--green); }
+  .nav-links a.active::after { width: 100%; }
+
+  .nav-actions { display: flex; align-items: center; gap: 1rem; }
+  .nav-icon-link {
+    color: var(--text-dim);
+    display: flex;
+    width: 34px; height: 34px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: color 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .nav-icon-link:hover { color: var(--green); border-color: var(--green-border); transform: translateY(-2px); }
+  .nav-icon-link svg { width: 16px; height: 16px; }
+
+  .nav-toggle {
+    display: none;
+    width: 34px; height: 34px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-toggle svg { width: 18px; height: 18px; }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px; left: 0; right: 0;
+    background: var(--bg-nav);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    z-index: 199;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s var(--ease);
+  }
+  .mobile-menu.open { max-height: 260px; }
+  .mobile-menu ul { list-style: none; padding: 1rem 1.5rem 1.5rem; display: flex; flex-direction: column; gap: 0.9rem; }
+  .mobile-menu a { text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; color: var(--text-dim); }
+  .mobile-menu a.active { color: var(--green); }
+
+  /* MAIN */
+  main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 4.5rem 0 2.5rem;
+    overflow: hidden;
+  }
+  .hero-canvas {
+    position: absolute;
+    inset: -20px -1.5rem auto -1.5rem;
+    height: calc(100% + 40px);
+    width: auto;
+    opacity: 0.22;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+  .hero-inner { position: relative; z-index: 1; }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--green-dim);
+    background: var(--green-soft);
+    border: 1px solid var(--green-border);
+    border-radius: 100px;
+    padding: 0.35rem 0.8rem;
+    margin-bottom: 1.4rem;
+  }
+  .hero-eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse-dot 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.75); } }
+
+  .hero-title-row { display:flex; align-items:center; gap:1rem; margin-bottom:0.4rem; }
+  .hero-title-row svg { width: 52px; height: 52px; flex-shrink: 0; filter: drop-shadow(0 0 14px rgba(204,0,0,0.35)); }
+
+  .hero-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(2.1rem, 5.4vw, 3.4rem);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .hero-title .cursor-blink {
+    display: inline-block;
+    width: 0.5ch;
+    background: var(--green);
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hero-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(1rem, 2.4vw, 1.3rem);
+    color: var(--text-muted);
+    margin: 0.3rem 0 2rem;
+    min-height: 1.6em;
+  }
+  .hero-subtitle .type-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: var(--green);
+    margin-left: 3px;
+    vertical-align: -0.15em;
+    animation: blink 0.9s step-end infinite;
+  }
+
+  /* STATS */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 2.6rem;
+  }
+  .stat-box {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 1rem 0.9rem;
+    text-align: center;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .stat-box:hover { border-color: var(--green-border); transform: translateY(-3px); }
+  .stat-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    font-weight: 700;
+    color: var(--green);
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.3rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* INFO CARD (terminal) */
+  .terminal-card {
+    border: 1px solid var(--green-border);
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    margin-bottom: 3rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-glow);
+  }
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.65rem 0.9rem;
+    background: #0c0c0c;
+    border-bottom: 1px solid var(--border);
+  }
+  .terminal-bar span { width: 10px; height: 10px; border-radius: 50%; display:inline-block; }
+  .terminal-bar .dot-r { background: #ff5f56; }
+  .terminal-bar .dot-y { background: #ffbd2e; }
+  .terminal-bar .dot-g { background: #27c93f; }
+  .terminal-bar .path {
+    margin-left: 0.6rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+  }
+  .info-card {
+    padding: 1.4rem 1.8rem 1.6rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    line-height: 2;
+  }
+  .info-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .info-label { color: var(--text); min-width: 80px; display: inline-block; }
+  .info-sep { color: var(--text-dim); }
+  .info-value { color: var(--text); }
+  .info-link {
+    color: var(--green-dim);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--green-border);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .info-link:hover { color: var(--green); border-color: var(--green); }
+
+  /* SECTION HEADERS */
+  .section-head { display:flex; align-items:baseline; gap:0.75rem; margin-bottom: 1.5rem; }
+  .section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-title::before { content: "//"; color: var(--text-dim); }
+  .section-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.1rem 0.55rem;
+  }
+  .section-rule { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3.5rem;
+  }
+
+  /* CARD tilt wrapper */
+  .tilt-wrap { perspective: 900px; }
+
+  .cert-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.4rem 3.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+    transition: background 0.25s, border-color 0.25s, transform 0.25s var(--ease), box-shadow 0.25s;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .cert-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(400px circle at var(--mx,50%) var(--my,0%), rgba(0,255,65,0.08), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .cert-card:hover::before { opacity: 1; }
+  .cert-card:hover {
+    background: var(--card-hover);
+    border-color: var(--green-border);
+    box-shadow: 0 14px 34px -18px rgba(0,255,65,0.35);
+  }
+
+  .cert-badge {
+    width: 100%;
+    height: 140px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #fff;
+    padding: 10px;
+  }
+  .cert-badge.dark-bg { background: #111827; padding: 8px; }
+  .cert-badge-wrap {
+    width: 100%;
+    height: 140px;
+    border-radius: 8px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    transition: transform 0.35s var(--ease);
+  }
+  .cert-card:hover .cert-badge-wrap,
+  .cert-card:hover .cert-badge { transform: translateZ(20px) scale(1.02); }
+
+  .cert-info { display: flex; flex-direction: column; gap: 0.25rem; }
+  .cert-name { font-size: 0.95rem; font-weight: 600; color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.35; }
+  .cert-issuer { font-size: 0.78rem; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+
+  .cert-arrow {
+    position: absolute;
+    bottom: 1rem; right: 1rem;
+    width: 30px; height: 30px;
+    background: var(--btn-green);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, transform 0.25s var(--ease);
+  }
+  .cert-card:hover .cert-arrow { background: var(--btn-green-hover); transform: translate(3px,-3px); }
+  .cert-arrow svg { width: 14px; height: 14px; fill: none; stroke: white; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  .cert-tag {
+    position: absolute;
+    bottom: 1rem; left: 1.4rem;
+    font-size: 0.7rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--green-dim);
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 4px;
+    padding: 2px 8px;
+  }
+  .cert-tag.pending { color: var(--amber); background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.2); }
+
+  /* PROJECTS */
+  .proj-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: background 0.25s, border-color 0.25s, transform 0.25s var(--ease), box-shadow 0.25s;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .proj-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(400px circle at var(--mx,50%) var(--my,0%), rgba(0,255,65,0.08), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .proj-card:hover::before { opacity: 1; }
+  .proj-card:hover {
+    background: var(--card-hover);
+    border-color: var(--green-dim);
+    box-shadow: 0 14px 34px -18px rgba(0,255,65,0.35);
+  }
+
+  .proj-header { display: flex; align-items: center; justify-content: space-between; }
+  .proj-icon {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    background: rgba(0,255,65,0.07);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    transition: transform 0.3s var(--ease), border-color 0.3s;
+  }
+  .proj-card:hover .proj-icon { transform: rotate(-6deg) scale(1.08); border-color: var(--green-border); }
+
+  .proj-links { display: flex; gap: 0.5rem; }
+  .proj-link {
+    font-size: 0.72rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--green-dim);
+    background: rgba(0,255,65,0.07);
+    border: 1px solid rgba(0,255,65,0.15);
+    border-radius: 4px;
+    padding: 3px 9px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .proj-link:hover { background: rgba(0,255,65,0.14); transform: translateY(-1px); }
+  .proj-link svg { width: 11px; height: 11px; }
+
+  .proj-name { font-size: 1rem; font-weight: 600; color: var(--text); font-family: 'Inter', sans-serif; }
+  .proj-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.55; }
+  .proj-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.2rem; }
+  .proj-tag {
+    font-size: 0.68rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-dim);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 7px;
+  }
+
+  /* SKILLS MARQUEE */
+  .marquee-section { margin-bottom: 3.5rem; }
+  .marquee-wrap {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    padding: 1.1rem 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .marquee-wrap::before, .marquee-wrap::after {
+    content: "";
+    position: absolute; top: 0; bottom: 0;
+    width: 60px; z-index: 2;
+  }
+  .marquee-wrap::before { left: 0; background: linear-gradient(90deg, var(--bg-card), transparent); }
+  .marquee-wrap::after { right: 0; background: linear-gradient(-90deg, var(--bg-card), transparent); }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    gap: 2.2rem;
+    animation: marquee 26s linear infinite;
+  }
+  .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .marquee-item .sep { color: var(--green-border); }
+
+  /* CONTACT / CTA */
+  .contact-card {
+    border: 1px solid var(--green-border);
+    background: linear-gradient(180deg, var(--bg-card), #0a0f0a);
+    border-radius: var(--radius);
+    padding: 2.4rem 2rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-card h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    color: var(--text);
+    margin-bottom: 0.6rem;
+  }
+  .contact-card p { color: var(--text-dim); font-size: 0.92rem; margin-bottom: 1.6rem; max-width: 46ch; margin-inline: auto; }
+  .contact-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    padding: 0.7rem 1.3rem;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.2s var(--ease), background 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border: 1px solid transparent;
+  }
+  .btn svg { width: 15px; height: 15px; }
+  .btn-primary { background: var(--btn-green); color: #04120a; font-weight: 600; }
+  .btn-primary:hover { background: var(--btn-green-hover); transform: translateY(-2px); box-shadow: 0 10px 24px -10px rgba(0,255,65,0.5); }
+  .btn-outline { border-color: var(--green-border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--green-dim); color: var(--green); transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  .footer-social { display: flex; justify-content: center; gap: 0.8rem; margin-bottom: 1rem; }
+  .footer-social a {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-dim);
+    transition: color 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .footer-social a:hover { color: var(--green); border-color: var(--green-border); transform: translateY(-3px); }
+  .footer-social svg { width: 16px; height: 16px; }
+  footer .copy { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-dim); }
+  footer .copy .heart { color: var(--red); animation: heartbeat 1.6s ease-in-out infinite; display:inline-block; }
+  @keyframes heartbeat { 0%,100% { transform: scale(1); } 25% { transform: scale(1.25); } 40% { transform: scale(1); } }
+
+  /* BACK TO TOP */
+  .to-top {
+    position: fixed;
+    right: 1.4rem; bottom: 1.4rem;
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--green-border);
+    color: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; transform: translateY(10px);
+    transition: opacity 0.25s, transform 0.25s, visibility 0.25s, border-color 0.2s;
+    cursor: pointer;
+    z-index: 150;
+  }
+  .to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+  .to-top:hover { border-color: var(--green); box-shadow: 0 0 16px rgba(0,255,65,0.25); }
+  .to-top svg { width: 18px; height: 18px; }
+
+  /* FOCUS STATES */
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+    .nav-toggle { display: flex; }
+    .mobile-menu { display: block; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .hero-title-row svg { width: 42px; height: 42px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<nav>
+  <a href="#top" class="nav-brand"><span class="prompt">&gt;</span>
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="50" cy="42" rx="32" ry="30" fill="#cc0000" opacity="0.95"/>
+      <rect x="28" y="62" width="44" height="20" rx="4" fill="#cc0000" opacity="0.95"/>
+      <rect x="36" y="68" width="8" height="14" rx="2" fill="#0a0a0a"/>
+      <rect x="48" y="68" width="8" height="14" rx="2" fill="#0a0a0a"/>
+      <rect x="60" y="68" width="8" height="14" rx="2" fill="#0a0a0a"/>
+      <ellipse cx="37" cy="40" rx="10" ry="11" fill="#0a0a0a"/>
+      <ellipse cx="63" cy="40" rx="10" ry="11" fill="#0a0a0a"/>
+      <path d="M46 52 L50 46 L54 52 L52 54 L48 54 Z" fill="#0a0a0a"/>
+    </svg>
+    seif@portfolio</a>
+  <ul class="nav-links">
+    <li><a href="#top" class="active" data-nav>~/home</a></li>
+    <li><a href="#certifications" data-nav>certifications</a></li>
+    <li><a href="#projects" data-nav>projects</a></li>
+    <li><a href="#contact" data-nav>contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a class="nav-icon-link" href="https://github.com/your-username" target="_blank" rel="noopener" aria-label="GitHub">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 5.02 3.26 9.27 7.77 10.78.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.16.69-3.83-1.34-3.83-1.34-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.52-.29-5.17-1.26-5.17-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.14 1.16a10.9 10.9 0 0 1 5.72 0c2.18-1.47 3.14-1.16 3.14-1.16.62 1.57.23 2.73.11 3.02.73.79 1.17 1.8 1.17 3.04 0 4.35-2.66 5.31-5.19 5.59.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.66.79.55A11.52 11.52 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5z"/></svg>
+    </a>
+    <a class="nav-icon-link" href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.58c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0z"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#top" data-nav-mobile class="active">~/home</a></li>
+    <li><a href="#certifications" data-nav-mobile>certifications</a></li>
+    <li><a href="#projects" data-nav-mobile>projects</a></li>
+    <li><a href="#contact" data-nav-mobile>contact</a></li>
+  </ul>
+</div>
+
+<main id="top">
+
+  <section class="hero">
+    <canvas class="hero-canvas" id="matrixCanvas" aria-hidden="true"></canvas>
+    <div class="hero-inner">
+      <div class="hero-eyebrow"><span class="dot"></span> available for freelance &amp; full-time roles</div>
+
+      <div class="hero-title-row">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <ellipse cx="50" cy="42" rx="32" ry="30" fill="#cc0000" opacity="0.95"/>
+          <rect x="28" y="62" width="44" height="20" rx="4" fill="#cc0000" opacity="0.95"/>
+          <rect x="36" y="68" width="8" height="14" rx="2" fill="#0a0a0a"/>
+          <rect x="48" y="68" width="8" height="14" rx="2" fill="#0a0a0a"/>
+          <rect x="60" y="68" width="8" height="14" rx="2" fill="#0a0a0a"/>
+          <ellipse cx="37" cy="40" rx="10" ry="11" fill="#0a0a0a"/>
+          <ellipse cx="63" cy="40" rx="10" ry="11" fill="#0a0a0a"/>
+          <path d="M46 52 L50 46 L54 52 L52 54 L48 54 Z" fill="#0a0a0a"/>
+          <ellipse cx="50" cy="42" rx="32" ry="30" fill="none" stroke="#ff0000" stroke-width="1.5" opacity="0.4"/>
+        </svg>
+        <h1 class="hero-title">Seif Abdelgawad</h1>
+      </div>
+      <p class="hero-subtitle">// <span id="typewriter"></span><span class="type-cursor"></span></p>
+
+      <div class="stats-row reveal-stagger" id="statsRow">
+        <div class="stat-box"><div class="stat-num" data-count="8">0</div><div class="stat-label">Certs Earned</div></div>
+        <div class="stat-box"><div class="stat-num" data-count="3">0</div><div class="stat-label">Hands-on Labs</div></div>
+        <div class="stat-box"><div class="stat-num" data-count="100" data-suffix="%">0%</div><div class="stat-label">Attack Block Rate</div></div>
+        <div class="stat-box"><div class="stat-num" data-count="2">0</div><div class="stat-label">In Progress</div></div>
+      </div>
+
+      <div class="terminal-card reveal">
+        <div class="terminal-bar">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+          <span class="path">whoami.sh</span>
+        </div>
+        <div class="info-card">
+          <div class="info-row">
+            <span class="info-label">Name</span>
+            <span class="info-sep">:</span>
+            <span class="info-value">Seif Abdelgawad</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Job</span>
+            <span class="info-sep">:</span>
+            <span class="info-value">Penetration Tester || Bug Hunter</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">From</span>
+            <span class="info-sep">:</span>
+            <span class="info-value">Egypt 🇪🇬</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">LinkedIn</span>
+            <span class="info-sep">:</span>
+            <a href="https://www.linkedin.com/in/your-profile" class="info-link" target="_blank" rel="noopener">https://www.linkedin.com/in/your-profile</a>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Github</span>
+            <span class="info-sep">:</span>
+            <a href="https://github.com/your-username" class="info-link" target="_blank" rel="noopener">https://github.com/your-username</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="marquee-section reveal">
+    <div class="marquee-wrap">
+      <div class="marquee-track" id="marqueeTrack">
+        <!-- items injected twice via JS for seamless loop -->
+      </div>
+    </div>
+  </section>
+
+  <section id="certifications">
+    <div class="section-head reveal">
+      <span class="section-title">Certifications</span>
+      <span class="section-count">08</span>
+      <span class="section-rule"></span>
+    </div>
+    <div class="grid reveal-stagger" id="certGrid">
+
+      <a class="cert-card" href="#" target="_blank" rel="noopener">
+        <div class="cert-badge-wrap">
+          <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg" width="160" height="50" aria-hidden="true">
+            <rect x="8" y="10" width="40" height="40" rx="6" fill="#FA582D"/>
+            <path d="M16 30 L26 40 L42 20" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="58" y="28" font-family="Arial, sans-serif" font-weight="800" font-size="14" fill="#FA582D">paloalto</text>
+            <text x="58" y="44" font-family="Arial, sans-serif" font-weight="400" font-size="11" fill="#888">NETWORKS</text>
+          </svg>
+        </div>
+        <div class="cert-info">
+          <span class="cert-name">PCNSP</span>
+          <span class="cert-issuer">Palo Alto Networks · Jul 2026</span>
+        </div>
+        <span class="cert-tag">✓ verified</span>
+        <div class="cert-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+
+      <a class="cert-card" href="#" target="_blank" rel="noopener">
+        <div class="cert-badge-wrap">
+          <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg" width="160" height="50" aria-hidden="true">
+            <path d="M16 8 L30 4 L44 8 L44 26 C44 36 30 44 30 44 C30 44 16 36 16 26 Z" fill="#0070CE"/>
+            <path d="M22 24 L27 30 L38 18" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="56" y="34" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#0070CE">sophos</text>
+          </svg>
+        </div>
+        <div class="cert-info">
+          <span class="cert-name">ET80 – Firewall Engineer v22.0</span>
+          <span class="cert-issuer">Sophos · Aug 2026</span>
+        </div>
+        <span class="cert-tag">✓ verified</span>
+        <div class="cert-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+
+      <a class="cert-card" href="#" target="_blank" rel="noopener">
+        <div class="cert-badge-wrap">
+          <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg" width="160" height="50" aria-hidden="true">
+            <path d="M16 8 L30 4 L44 8 L44 26 C44 36 30 44 30 44 C30 44 16 36 16 26 Z" fill="#0070CE"/>
+            <path d="M22 24 L27 30 L38 18" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="56" y="34" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#0070CE">sophos</text>
+          </svg>
+        </div>
+        <div class="cert-info">
+          <span class="cert-name">ET15 – Endpoint Engineer v6.0</span>
+          <span class="cert-issuer">Sophos · Sept 2026</span>
+        </div>
+        <span class="cert-tag">✓ verified</span>
+        <div class="cert-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+
+      <a class="cert-card" href="#" target="_blank" rel="noopener">
+        <div class="cert-badge-wrap">
+          <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg" width="160" height="50" aria-hidden="true">
+            <rect x="8" y="6" width="36" height="48" rx="4" fill="#EE3124"/>
+            <text x="14" y="38" font-family="Arial, sans-serif" font-weight="900" font-size="24" fill="white">F</text>
+            <text x="54" y="28" font-family="Arial, sans-serif" font-weight="700" font-size="13" fill="#EE3124">Fortinet</text>
+            <text x="54" y="44" font-family="Arial, sans-serif" font-weight="400" font-size="11" fill="#888">NSE 2</text>
+          </svg>
+        </div>
+        <div class="cert-info">
+          <span class="cert-name">NSE 2 – Network Security Associate</span>
+          <span class="cert-issuer">Fortinet · Aug 2026</span>
+        </div>
+        <span class="cert-tag">✓ verified</span>
+        <div class="cert-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+
+      <a class="cert-card" href="#" target="_blank" rel="noopener">
+        <div class="cert-badge-wrap">
+          <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg" width="160" height="50" aria-hidden="true">
+            <rect x="8" y="6" width="36" height="48" rx="4" fill="#EE3124"/>
+            <text x="14" y="38" font-family="Arial, sans-serif" font-weight="900" font-size="24" fill="white">F</text>
+            <text x="54" y="28" font-family="Arial, sans-serif" font-weight="700" font-size="13" fill="#EE3124">Fortinet</text>
+            <text x="54" y="44" font-family="Arial, sans-serif" font-weight="400" font-size="11" fill="#888">NSE 1</text>
+          </svg>
+        </div>
+        <div class="cert-info">
+          <span class="cert-name">NSE 1 – Information Security Awareness</span>
+          <span class="cert-issuer">Fortinet · Aug 2026</span>
+        </div>
+        <span class="cert-tag">✓ verified</span>
+        <div class="cert-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+
+      <a class="cert-card" href="#" target="_blank" rel="noopener">
+        <div class="cert-badge-wrap">
+          <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg" width="160" height="50" aria-hidden="true">
+            <circle cx="30" cy="30" r="22" fill="#1BA0D7"/>
+            <text x="18" y="36" font-family="Arial, sans-serif" font-weight="900" font-size="16" fill="white">Co</text>
+            <text x="56" y="28" font-family="Arial, sans-serif" font-weight="700" font-size="13" fill="#1BA0D7">Cisco</text>
+            <text x="56" y="44" font-family="Arial, sans-serif" font-weight="400" font-size="11" fill="#888">CCNA</text>
+          </svg>
+        </div>
+        <div class="cert-info">
+          <span class="cert-name">CCNA: Introduction to Networks</span>
+          <span class="cert-issuer">Cisco · Jun 2026</span>
+        </div>
+        <span class="cert-tag">✓ verified</span>
+        <div class="cert-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+
+      <a class="cert-card" href="#" target="_blank" rel="noopener">
+        <div class="cert-badge-wrap" style="background:#1a0a0a;">
+          <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg" width="160" height="50" aria-hidden="true">
+            <circle cx="30" cy="30" r="20" fill="none" stroke="#EB3324" stroke-width="3"/>
+            <text x="20" y="36" font-family="Arial, sans-serif" font-weight="900" font-size="14" fill="#EB3324">OS</text>
+            <text x="56" y="24" font-family="Arial, sans-serif" font-weight="700" font-size="12" fill="#EB3324">Offensive</text>
+            <text x="56" y="38" font-family="Arial, sans-serif" font-weight="700" font-size="12" fill="#EB3324">Security</text>
+            <text x="56" y="52" font-family="Arial, sans-serif" font-weight="400" font-size="10" fill="#888">OSCP</text>
+          </svg>
+        </div>
+        <div class="cert-info">
+          <span class="cert-name">OSCP – Offensive Security Certified</span>
+          <span class="cert-issuer">Offensive Security</span>
+        </div>
+        <span class="cert-tag pending">🔄 in progress</span>
+        <div class="cert-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+
+      <a class="cert-card" href="#" target="_blank" rel="noopener">
+        <div class="cert-badge-wrap">
+          <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg" width="160" height="50" aria-hidden="true">
+            <rect x="8" y="6" width="36" height="48" rx="4" fill="#EE3124"/>
+            <text x="14" y="38" font-family="Arial, sans-serif" font-weight="900" font-size="24" fill="white">F</text>
+            <text x="54" y="28" font-family="Arial, sans-serif" font-weight="700" font-size="13" fill="#EE3124">Fortinet</text>
+            <text x="54" y="44" font-family="Arial, sans-serif" font-weight="400" font-size="11" fill="#888">NSE 4</text>
+          </svg>
+        </div>
+        <div class="cert-info">
+          <span class="cert-name">NSE 4 – FortiGate Security</span>
+          <span class="cert-issuer">Fortinet</span>
+        </div>
+        <span class="cert-tag pending">🔄 in progress</span>
+        <div class="cert-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-head reveal">
+      <span class="section-title">Projects</span>
+      <span class="section-count">03</span>
+      <span class="section-rule"></span>
+    </div>
+    <div class="grid reveal-stagger" id="projGrid">
+
+      <div class="proj-card">
+        <div class="proj-header">
+          <div class="proj-icon">🛡️</div>
+          <div class="proj-links">
+            <a class="proj-link" href="#" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 5.02 3.26 9.27 7.77 10.78.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.16.69-3.83-1.34-3.83-1.34-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.52-.29-5.17-1.26-5.17-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.14 1.16a10.9 10.9 0 0 1 5.72 0c2.18-1.47 3.14-1.16 3.14-1.16.62 1.57.23 2.73.11 3.02.73.79 1.17 1.8 1.17 3.04 0 4.35-2.66 5.31-5.19 5.59.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.66.79.55A11.52 11.52 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+        <span class="proj-name">IPS Detection &amp; Prevention Lab</span>
+        <span class="proj-desc">2-zone VMware lab with Sophos XG inline. Validated 100% attack blocking rate across 3 controlled simulations using Nmap &amp; Metasploit.</span>
+        <div class="proj-tags">
+          <span class="proj-tag">Sophos XG</span>
+          <span class="proj-tag">VMware</span>
+          <span class="proj-tag">Metasploit</span>
+          <span class="proj-tag">Nmap</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-header">
+          <div class="proj-icon">🌊</div>
+          <div class="proj-links">
+            <a class="proj-link" href="#" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 5.02 3.26 9.27 7.77 10.78.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.16.69-3.83-1.34-3.83-1.34-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.52-.29-5.17-1.26-5.17-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.14 1.16a10.9 10.9 0 0 1 5.72 0c2.18-1.47 3.14-1.16 3.14-1.16.62 1.57.23 2.73.11 3.02.73.79 1.17 1.8 1.17 3.04 0 4.35-2.66 5.31-5.19 5.59.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.66.79.55A11.52 11.52 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+        <span class="proj-name">Sophos XG DoS Protection Lab</span>
+        <span class="proj-desc">Simulated TCP SYN Flood using hping3 in isolated VMware lab. 100% flood packets blocked after enabling DoS policy — confirmed via firewall logs.</span>
+        <div class="proj-tags">
+          <span class="proj-tag">Sophos XG</span>
+          <span class="proj-tag">hping3</span>
+          <span class="proj-tag">VMware</span>
+          <span class="proj-tag">DoS</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-header">
+          <div class="proj-icon">🔥</div>
+          <div class="proj-links">
+            <a class="proj-link" href="#" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 5.02 3.26 9.27 7.77 10.78.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.16.69-3.83-1.34-3.83-1.34-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.52-.29-5.17-1.26-5.17-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.14 1.16a10.9 10.9 0 0 1 5.72 0c2.18-1.47 3.14-1.16 3.14-1.16.62 1.57.23 2.73.11 3.02.73.79 1.17 1.8 1.17 3.04 0 4.35-2.66 5.31-5.19 5.59.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.66.79.55A11.52 11.52 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+        <span class="proj-name">Palo Alto Security Policy Migration</span>
+        <span class="proj-desc">Migrated 15+ rules from port-based to App-ID application policies. Configured SSL/TLS decryption and documented 3+ bypass mitigation techniques.</span>
+        <div class="proj-tags">
+          <span class="proj-tag">Palo Alto</span>
+          <span class="proj-tag">App-ID</span>
+          <span class="proj-tag">PAN-OS</span>
+          <span class="proj-tag">SSL/TLS</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-card reveal">
+      <h2>&gt; initiate_contact --secure</h2>
+      <p>Open to penetration testing engagements, bug bounty collaboration, and full-time security roles. Let's talk.</p>
+      <div class="contact-actions">
+        <a class="btn btn-primary" href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.58c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0z"/></svg>
+          Connect on LinkedIn
+        </a>
+        <a class="btn btn-outline" href="https://github.com/your-username" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 5.02 3.26 9.27 7.77 10.78.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.16.69-3.83-1.34-3.83-1.34-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.52-.29-5.17-1.26-5.17-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.14 1.16a10.9 10.9 0 0 1 5.72 0c2.18-1.47 3.14-1.16 3.14-1.16.62 1.57.23 2.73.11 3.02.73.79 1.17 1.8 1.17 3.04 0 4.35-2.66 5.31-5.19 5.59.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.66.79.55A11.52 11.52 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5z"/></svg>
+          View GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-social">
+    <a href="https://github.com/your-username" target="_blank" rel="noopener" aria-label="GitHub">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 5.02 3.26 9.27 7.77 10.78.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.16.69-3.83-1.34-3.83-1.34-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.52-.29-5.17-1.26-5.17-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.14 1.16a10.9 10.9 0 0 1 5.72 0c2.18-1.47 3.14-1.16 3.14-1.16.62 1.57.23 2.73.11 3.02.73.79 1.17 1.8 1.17 3.04 0 4.35-2.66 5.31-5.19 5.59.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.66.79.55A11.52 11.52 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.58c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0z"/></svg>
+    </a>
+  </div>
+  <p class="copy">&copy; <span id="year">2026</span> Seif Abdelgawad — Built with <span class="heart">♥</span> &amp; curiosity</p>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script>
+(function () {
+  "use strict";
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- year ---------- */
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---------- scroll progress bar ---------- */
+  var progressEl = document.getElementById('scrollProgress');
+  function updateProgress() {
+    var h = document.documentElement;
+    var scrolled = (h.scrollTop) / ((h.scrollHeight - h.clientHeight) || 1) * 100;
+    progressEl.style.width = scrolled + '%';
+  }
+  document.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  /* ---------- back to top ---------- */
+  var toTop = document.getElementById('toTop');
+  document.addEventListener('scroll', function () {
+    toTop.classList.toggle('show', window.scrollY > 480);
+  }, { passive: true });
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+
+  /* ---------- mobile menu ---------- */
+  var navToggle = document.getElementById('navToggle');
+  var mobileMenu = document.getElementById('mobileMenu');
+  navToggle.addEventListener('click', function () {
+    var open = mobileMenu.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.querySelectorAll('[data-nav-mobile]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      mobileMenu.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  /* ---------- scrollspy ---------- */
+  var sections = ['top', 'certifications', 'projects', 'contact'].map(function (id) {
+    return document.getElementById(id);
+  }).filter(Boolean);
+  var navLinks = document.querySelectorAll('[data-nav]');
+  var navLinksMobile = document.querySelectorAll('[data-nav-mobile]');
+
+  function setActive(id) {
+    navLinks.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+    });
+    navLinksMobile.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+    });
+  }
+
+  if ('IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) setActive(entry.target.id);
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  var revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    var ro = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function (el) { ro.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+  }
+
+  /* ---------- stagger delays ---------- */
+  document.querySelectorAll('.reveal-stagger').forEach(function (group) {
+    Array.prototype.forEach.call(group.children, function (child, i) {
+      child.style.transitionDelay = (i * 70) + 'ms';
+    });
+  });
+
+  /* ---------- typewriter ---------- */
+  var roles = ['Security Researcher', 'Penetration Tester', 'Bug Hunter', 'Network Defender'];
+  var twEl = document.getElementById('typewriter');
+  if (twEl) {
+    if (reduceMotion) {
+      twEl.textContent = roles[0];
+    } else {
+      (function typeLoop(roleIndex, charIndex, deleting) {
+        var current = roles[roleIndex % roles.length];
+        twEl.textContent = current.slice(0, charIndex);
+        var delay = deleting ? 35 : 70;
+        if (!deleting && charIndex === current.length) { delay = 1500; deleting = true; }
+        else if (deleting && charIndex === 0) { deleting = false; roleIndex++; delay = 300; }
+        var nextChar = charIndex + (deleting ? -1 : 1);
+        setTimeout(function () { typeLoop(roleIndex, nextChar, deleting); }, delay);
+      })(0, 0, false);
+    }
+  }
+
+  /* ---------- counters ---------- */
+  var counters = document.querySelectorAll('[data-count]');
+  function animateCounter(el) {
+    var target = parseInt(el.getAttribute('data-count'), 10);
+    var suffix = el.getAttribute('data-suffix') || '';
+    if (reduceMotion) { el.textContent = target + suffix; return; }
+    var start = 0;
+    var duration = 900;
+    var startTime = null;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(eased * target) + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target + suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  if ('IntersectionObserver' in window) {
+    var statsObserved = false;
+    var statsObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !statsObserved) {
+          statsObserved = true;
+          counters.forEach(animateCounter);
+        }
+      });
+    }, { threshold: 0.4 });
+    var statsRow = document.getElementById('statsRow');
+    if (statsRow) statsObs.observe(statsRow);
+  }
+
+  /* ---------- card tilt + glow-follow ---------- */
+  var tiltCards = document.querySelectorAll('.cert-card, .proj-card');
+  tiltCards.forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var rect = card.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      card.style.setProperty('--mx', x + 'px');
+      card.style.setProperty('--my', y + 'px');
+      if (!reduceMotion && card.classList.contains('cert-card')) {
+        var cx = rect.width / 2, cy = rect.height / 2;
+        var rx = ((y - cy) / cy) * -4;
+        var ry = ((x - cx) / cx) * 4;
+        card.style.transform = 'perspective(900px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(-2px)';
+      }
+    });
+    card.addEventListener('mouseleave', function () {
+      card.style.transform = '';
+    });
+  });
+
+  /* ---------- skills marquee ---------- */
+  var skills = ['Nmap', 'Metasploit', 'Burp Suite', 'Wireshark', 'Kali Linux', 'Palo Alto PAN-OS', 'Fortinet FortiGate', 'Sophos XG', 'hping3', 'VMware', 'Python', 'Bash', 'OWASP Top 10', 'SIEM'];
+  var track = document.getElementById('marqueeTrack');
+  if (track) {
+    var buildRow = function () {
+      var frag = document.createDocumentFragment();
+      skills.forEach(function (s) {
+        var span = document.createElement('span');
+        span.className = 'marquee-item';
+        span.innerHTML = '<span class="sep">◆</span> ' + s;
+        frag.appendChild(span);
+      });
+      return frag;
+    };
+    track.appendChild(buildRow());
+    track.appendChild(buildRow());
+    if (reduceMotion) track.style.animation = 'none';
+  }
+
+  /* ---------- matrix rain (hero background) ---------- */
+  var canvas = document.getElementById('matrixCanvas');
+  if (canvas && !reduceMotion && window.matchMedia('(min-width: 480px)').matches) {
+    var ctx = canvas.getContext('2d');
+    var chars = 'アイウエオカキクケコサシスセソ01ABCDEF#$%&';
+    var fontSize = 15;
+    var columns, drops, rafId;
+    var visible = true;
+
+    function resize() {
+      var rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height + 40;
+      columns = Math.floor(canvas.width / fontSize);
+      drops = new Array(columns).fill(0).map(function () { return Math.random() * -50; });
+    }
+
+    function draw() {
+      if (!visible) { rafId = requestAnimationFrame(draw); return; }
+      ctx.fillStyle = 'rgba(10,10,10,0.13)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ff41';
+      ctx.font = fontSize + 'px monospace';
+      for (var i = 0; i < columns; i++) {
+        var text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+      rafId = requestAnimationFrame(draw);
+    }
+
+    resize();
+    rafId = requestAnimationFrame(draw);
+    window.addEventListener('resize', resize);
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) { visible = entry.isIntersecting; });
+      }).observe(canvas);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
